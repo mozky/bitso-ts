@@ -1,0 +1,22 @@
+{
+  "name": "bitso-ts",
+  "version": "0.0.5",
+  "description": "Bitso module writen on TypeScript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prepublish": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc" 
+  },
+  "keywords": [
+    "bitso",
+    "typescript",
+    "javascript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^2.6.1"
+  }
+}
