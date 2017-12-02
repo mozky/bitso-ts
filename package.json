@@ -6,6 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "prepublish": "npm run build",
+    "lint": "tslint lib/*.ts -t verbose",    
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc" 
   },
@@ -17,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^2.6.1"
+    "typescript": "^2.6.1",
+    "tslint": "^5.0.0"    
   }
 }
