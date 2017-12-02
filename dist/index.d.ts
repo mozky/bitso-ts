@@ -1,3 +1,4 @@
+import BookInfo from './BookInfo';
 export declare class Bitso {
     private BITSO_BASE_URL_PRODUCTION;
     private BITSO_BASE_URL_DEVELOPMENT;
@@ -6,4 +7,5 @@ export declare class Bitso {
     private log;
     private baseUrl;
     constructor(key: string, secret: string, log?: boolean, production?: boolean);
+    getAvailableBooks(): Promise<BookInfo[]>;
 }
