@@ -5,10 +5,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepublish": "npm run build",
-    "lint": "tslint lib/*.ts -t verbose",    
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc" 
+    "prepublishOnly": "npm run build",
+    "lint": "tslint lib/*.ts -t verbose",
+    "test": "./node_modules/.bin/mocha --require ts-node/register ./test/*.spec.ts",
+    "build": "npm run lint & npm test & tsc"
   },
   "keywords": [
     "bitso",
@@ -18,7 +18,16 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^2.6.1",
-    "tslint": "^5.0.0"    
+    "@types/chai": "^4.0.6",
+    "@types/node": "^8.0.53",
+    "@types/mocha": "^2.2.44",
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
+    "ts-node": "^3.3.0",
+    "tslint": "^5.0.0",
+    "typescript": "^2.6.1"
+  },
+  "dependencies": {
+    "typed-rest-client": "^0.15.1"
   }
 }

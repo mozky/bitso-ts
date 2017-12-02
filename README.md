@@ -1,1 +1,1 @@
-bitso-ts
+# Bitso Typescript
