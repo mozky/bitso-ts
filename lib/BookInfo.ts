@@ -9,7 +9,7 @@ export default class BookInfo implements ISeriarizable<BookInfo> {
     private mMinValue: string
     private mMaxValue: string
 
-    public deserialize(input: any) {
+    public deserialize(input: any): BookInfo {
         this.mBook = input.book
         this.mMinAmount = input.minimum_amount
         this.mMaxAmount = input.maximum_amount

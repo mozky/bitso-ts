@@ -1,3 +1,4 @@
+import BitsoTicker from './BitsoTicker';
 import BookInfo from './BookInfo';
 export declare class Bitso {
     private BITSO_BASE_URL_PRODUCTION;
@@ -8,4 +9,5 @@ export declare class Bitso {
     private baseUrl;
     constructor(key: string, secret: string, log?: boolean, production?: boolean);
     getAvailableBooks(): Promise<BookInfo[]>;
+    getTickers(): Promise<BitsoTicker[]>;
 }

@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var rm = require("typed-rest-client/RestClient");
+var BitsoTicker_1 = require("./BitsoTicker");
 var BookInfo_1 = require("./BookInfo");
 var Bitso = /** @class */ (function () {
     function Bitso(key, secret, log, production) {
@@ -66,6 +67,28 @@ var Bitso = /** @class */ (function () {
                             });
                         }
                         return [2 /*return*/, books];
+                }
+            });
+        });
+    };
+    Bitso.prototype.getTickers = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var rest, res, tickers;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        rest = new rm.RestClient('nodejs', this.BITSO_BASE_URL_PRODUCTION);
+                        return [4 /*yield*/, rest.get('/v3/ticker')];
+                    case 1:
+                        res = _a.sent();
+                        tickers = [];
+                        if (res.statusCode === 200 && res.result.success) {
+                            res.result.payload.map(function (ticker) {
+                                tickers.push(new BitsoTicker_1.default().deserialize(ticker));
+                            });
+                        }
+                        console.log(tickers);
+                        return [2 /*return*/, tickers];
                 }
             });
         });

@@ -1,0 +1,31 @@
+import ISerializable from './ISerializable';
+export default class BitsoTicker implements ISerializable<BitsoTicker> {
+    private mLast;
+    private mHigh;
+    private mLow;
+    private mVwap;
+    private mVolume;
+    private mBid;
+    private mAsk;
+    private createdAt;
+    private mBook;
+    deserialize(input: any): BitsoTicker;
+    getBook(): string;
+    setBook(mBook: string): void;
+    getVolume(): string;
+    setVolume(mVolume: string): void;
+    getHigh(): string;
+    setHigh(mHigh: string): void;
+    getLast(): string;
+    setLast(mLast: string): void;
+    getLow(): string;
+    setLow(mLow: string): void;
+    getVwap(): string;
+    setVwap(mVwap: string): void;
+    getAsk(): string;
+    setAsk(mAsk: string): void;
+    getBid(): string;
+    setBid(mBid: string): void;
+    getCreatedAt(): string;
+    setCreatedAt(createdAt: string): void;
+}

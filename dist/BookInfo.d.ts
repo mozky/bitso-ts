@@ -7,7 +7,7 @@ export default class BookInfo implements ISeriarizable<BookInfo> {
     private mMaxPrice;
     private mMinValue;
     private mMaxValue;
-    deserialize(input: any): this;
+    deserialize(input: any): BookInfo;
     getBook(): string;
     setBook(mBook: string): void;
     getMinAmount(): string;
