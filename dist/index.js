@@ -87,7 +87,6 @@ var Bitso = /** @class */ (function () {
                                 tickers.push(new BitsoTicker_1.default().deserialize(ticker));
                             });
                         }
-                        console.log(tickers);
                         return [2 /*return*/, tickers];
                 }
             });
@@ -95,4 +94,4 @@ var Bitso = /** @class */ (function () {
     };
     return Bitso;
 }());
-exports.Bitso = Bitso;
+exports.default = Bitso;

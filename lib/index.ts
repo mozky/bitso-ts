@@ -3,7 +3,7 @@ import BitsoResponse from './BitsoResponse'
 import BitsoTicker from './BitsoTicker'
 import BookInfo from './BookInfo'
 
-export class Bitso {
+export default class Bitso {
   private BITSO_BASE_URL_PRODUCTION: string = 'https://api.bitso.com'
   private BITSO_BASE_URL_DEVELOPMENT: string = 'https://dev.bitso.com'
 
@@ -53,8 +53,8 @@ export class Bitso {
       })
     }
 
-    console.log(tickers)
-
     return tickers
   }
+
+
 }

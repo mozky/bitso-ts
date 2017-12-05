@@ -1,6 +1,6 @@
 import BitsoTicker from './BitsoTicker';
 import BookInfo from './BookInfo';
-export declare class Bitso {
+export default class Bitso {
     private BITSO_BASE_URL_PRODUCTION;
     private BITSO_BASE_URL_DEVELOPMENT;
     private key;
