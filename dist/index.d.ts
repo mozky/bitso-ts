@@ -1,3 +1,4 @@
+import BitsoOrderBook from './BitsoOrderBook';
 import BitsoTicker from './BitsoTicker';
 import BookInfo from './BookInfo';
 export default class Bitso {
@@ -10,4 +11,6 @@ export default class Bitso {
     constructor(key: string, secret: string, log?: boolean, production?: boolean);
     getAvailableBooks(): Promise<BookInfo[]>;
     getTickers(): Promise<BitsoTicker[]>;
+    getTicker(book: string): Promise<BitsoTicker>;
+    getOrderBook(book: string, aggregate: boolean): Promise<BitsoOrderBook>;
 }

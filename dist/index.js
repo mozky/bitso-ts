@@ -36,7 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var rm = require("typed-rest-client/RestClient");
+var BitsoOrderBook_1 = require("./BitsoOrderBook");
 var BitsoTicker_1 = require("./BitsoTicker");
+var Book_1 = require("./Book");
 var BookInfo_1 = require("./BookInfo");
 var Bitso = /** @class */ (function () {
     function Bitso(key, secret, log, production) {
@@ -61,7 +63,7 @@ var Bitso = /** @class */ (function () {
                         books = [];
                         // TODO: I dont like this method, the upper function should
                         // deserialize the payload also, still need to find a way of doing this
-                        if (res.statusCode === 200 && res.result.success) {
+                        if (res.statusCode === 200 && res.result && res.result.success) {
                             res.result.payload.map(function (book) {
                                 books.push(new BookInfo_1.default().deserialize(book));
                             });
@@ -82,12 +84,52 @@ var Bitso = /** @class */ (function () {
                     case 1:
                         res = _a.sent();
                         tickers = [];
-                        if (res.statusCode === 200 && res.result.success) {
+                        if (res.statusCode === 200 && res.result && res.result.success) {
                             res.result.payload.map(function (ticker) {
                                 tickers.push(new BitsoTicker_1.default().deserialize(ticker));
                             });
                         }
                         return [2 /*return*/, tickers];
+                }
+            });
+        });
+    };
+    Bitso.prototype.getTicker = function (book) {
+        return __awaiter(this, void 0, void 0, function () {
+            var rest, bookie, res, ticker;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        rest = new rm.RestClient('nodejs', this.BITSO_BASE_URL_PRODUCTION);
+                        bookie = new Book_1.default(book);
+                        return [4 /*yield*/, rest.get("/v3/ticker?book=" + new Book_1.default(book).getTicker())];
+                    case 1:
+                        res = _a.sent();
+                        ticker = new BitsoTicker_1.default();
+                        if (res.statusCode === 200 && res.result && res.result.success) {
+                            ticker.deserialize(res.result.payload);
+                        }
+                        return [2 /*return*/, ticker];
+                }
+            });
+        });
+    };
+    Bitso.prototype.getOrderBook = function (book, aggregate) {
+        return __awaiter(this, void 0, void 0, function () {
+            var rest, bookie, res, orderBook;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        rest = new rm.RestClient('nodejs', this.BITSO_BASE_URL_PRODUCTION);
+                        bookie = new Book_1.default(book);
+                        return [4 /*yield*/, rest.get("/v3/order_book?book=" + new Book_1.default(book).getTicker() + "&aggregate=" + (aggregate ? 'true' : 'false'))];
+                    case 1:
+                        res = _a.sent();
+                        orderBook = new BitsoOrderBook_1.default();
+                        if (res.statusCode === 200 && res.result && res.result.success) {
+                            orderBook.deserialize(res.result.payload);
+                        }
+                        return [2 /*return*/, orderBook];
                 }
             });
         });

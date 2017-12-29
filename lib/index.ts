@@ -1,6 +1,8 @@
 import * as rm from 'typed-rest-client/RestClient'
+import BitsoOrderBook from './BitsoOrderBook'
 import BitsoResponse from './BitsoResponse'
 import BitsoTicker from './BitsoTicker'
+import Book from './Book'
 import BookInfo from './BookInfo'
 
 export default class Bitso {
@@ -30,7 +32,7 @@ export default class Bitso {
 
     // TODO: I dont like this method, the upper function should
     // deserialize the payload also, still need to find a way of doing this
-    if (res.statusCode === 200 && res.result.success) {
+    if (res.statusCode === 200 && res.result && res.result.success) {
       res.result.payload.map((book: any) => {
         books.push(new BookInfo().deserialize(book))
       })
@@ -47,7 +49,7 @@ export default class Bitso {
 
     const tickers: BitsoTicker[] = []
 
-    if (res.statusCode === 200 && res.result.success) {
+    if (res.statusCode === 200 && res.result && res.result.success) {
       res.result.payload.map((ticker: any) => {
         tickers.push(new BitsoTicker().deserialize(ticker))
       })
@@ -56,5 +58,39 @@ export default class Bitso {
     return tickers
   }
 
+  public async getTicker(book: string): Promise<BitsoTicker> {
+    const rest: rm.RestClient = new rm.RestClient('nodejs', this.BITSO_BASE_URL_PRODUCTION)
+
+    const bookie = new Book(book)
+
+    const res: rm.IRestResponse<BitsoResponse<BitsoTicker>> =
+      await rest.get<BitsoResponse<BitsoTicker>>(`/v3/ticker?book=${new Book(book).getTicker()}`)
+
+    const ticker: BitsoTicker = new BitsoTicker()
+
+    if (res.statusCode === 200 && res.result && res.result.success) {
+      ticker.deserialize(res.result.payload)
+    }
+
+    return ticker
+  }
+
+  public async getOrderBook(book: string, aggregate: boolean): Promise<BitsoOrderBook> {
+    const rest: rm.RestClient = new rm.RestClient('nodejs', this.BITSO_BASE_URL_PRODUCTION)
+
+    const bookie = new Book(book)
+
+    const res: rm.IRestResponse<BitsoResponse<BitsoOrderBook>> =
+      await rest.get<BitsoResponse<BitsoOrderBook>>(
+        `/v3/order_book?book=${new Book(book).getTicker()}&aggregate=${aggregate ? 'true' : 'false'}`)
+
+    const orderBook: BitsoOrderBook = new BitsoOrderBook()
+
+    if (res.statusCode === 200 && res.result && res.result.success) {
+      orderBook.deserialize(res.result.payload)
+    }
+
+    return orderBook
+  }
 
 }
