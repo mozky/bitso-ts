@@ -1,5 +1,7 @@
+import BitsoAccountStatus from './BitsoAccountStatus';
 import BitsoOrderBook from './BitsoOrderBook';
 import BitsoTicker from './BitsoTicker';
+import BitsoTransactions from './BitsoTransactions';
 import BookInfo from './BookInfo';
 export default class Bitso {
     private BITSO_BASE_URL_PRODUCTION;
@@ -13,4 +15,6 @@ export default class Bitso {
     getTickers(): Promise<BitsoTicker[]>;
     getTicker(book: string): Promise<BitsoTicker>;
     getOrderBook(book: string, aggregate: boolean): Promise<BitsoOrderBook>;
+    getTrades(book: string): Promise<BitsoTransactions>;
+    getAccountStatus(): Promise<BitsoAccountStatus>;
 }

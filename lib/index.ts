@@ -1,9 +1,12 @@
 import * as rm from 'typed-rest-client/RestClient'
+import BitsoAccountStatus from './BitsoAccountStatus'
 import BitsoOrderBook from './BitsoOrderBook'
 import BitsoResponse from './BitsoResponse'
 import BitsoTicker from './BitsoTicker'
+import BitsoTransactions from './BitsoTransactions'
 import Book from './Book'
 import BookInfo from './BookInfo'
+import BitsoPrivateTokenHandler from './Utils/BitsoPrivateTokenHandler'
 
 export default class Bitso {
   private BITSO_BASE_URL_PRODUCTION: string = 'https://api.bitso.com'
@@ -91,6 +94,41 @@ export default class Bitso {
     }
 
     return orderBook
+  }
+
+  public async getTrades(book: string): Promise<BitsoTransactions> {
+    const rest: rm.RestClient = new rm.RestClient('nodejs', this.BITSO_BASE_URL_PRODUCTION)
+
+    const res: rm.IRestResponse<BitsoResponse<BitsoTransactions>> =
+      await rest.get<BitsoResponse<BitsoTransactions>>(`/v3/trades?book=${new Book(book).getTicker()}`)
+
+    const transactions: BitsoTransactions = new BitsoTransactions()
+
+    if (res.statusCode === 200 && res.result && res.result.success) {
+      transactions.deserialize(res.result.payload)
+    }
+
+    return transactions
+  }
+
+  public async getAccountStatus(): Promise<BitsoAccountStatus> {
+    const httpMethod = 'GET'
+    const requestPath = '/v3/account_status/'
+    const header: BitsoPrivateTokenHandler =
+      new BitsoPrivateTokenHandler(this.key, this. secret, httpMethod, requestPath)
+
+    const rest: rm.RestClient = new rm.RestClient('nodejs', this.BITSO_BASE_URL_PRODUCTION, [header])
+
+    const res: rm.IRestResponse<BitsoResponse<BitsoAccountStatus>> =
+      await rest.get<BitsoResponse<BitsoAccountStatus>>('/v3/account_status/')
+
+    const accountStatus: BitsoAccountStatus = new BitsoAccountStatus()
+
+    if (res.statusCode === 200 && res.result && res.result.success) {
+      accountStatus.deserialize(res.result.payload)
+    }
+
+    return accountStatus
   }
 
 }
