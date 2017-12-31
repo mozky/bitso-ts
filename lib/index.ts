@@ -1,5 +1,6 @@
 import * as rm from 'typed-rest-client/RestClient'
 import BitsoAccountStatus from './BitsoAccountStatus'
+import BitsoBalance from './BitsoBalance'
 import BitsoOrderBook from './BitsoOrderBook'
 import BitsoResponse from './BitsoResponse'
 import BitsoTicker from './BitsoTicker'
@@ -120,7 +121,7 @@ export default class Bitso {
     const rest: rm.RestClient = new rm.RestClient('nodejs', this.BITSO_BASE_URL_PRODUCTION, [header])
 
     const res: rm.IRestResponse<BitsoResponse<BitsoAccountStatus>> =
-      await rest.get<BitsoResponse<BitsoAccountStatus>>('/v3/account_status/')
+      await rest.get<BitsoResponse<BitsoAccountStatus>>(requestPath)
 
     const accountStatus: BitsoAccountStatus = new BitsoAccountStatus()
 
@@ -129,6 +130,27 @@ export default class Bitso {
     }
 
     return accountStatus
+  }
+
+  public async getAccountBalance(): Promise<BitsoBalance> {
+    const httpMethod = 'GET'
+    const requestPath = '/v3/balance'
+
+    const header: BitsoPrivateTokenHandler =
+      new BitsoPrivateTokenHandler(this.key, this. secret, httpMethod, requestPath)
+
+    const rest: rm.RestClient = new rm.RestClient('nodejs', this.BITSO_BASE_URL_PRODUCTION, [header])
+
+    const res: rm.IRestResponse<BitsoResponse<BitsoBalance>> =
+      await rest.get<BitsoResponse<BitsoBalance>>(requestPath)
+
+    const accountBalance: BitsoBalance = new BitsoBalance()
+
+    if (res.statusCode === 200 && res.result && res.result.success) {
+      accountBalance.deserialize(res.result.payload)
+    }
+
+    return accountBalance
   }
 
 }

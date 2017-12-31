@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var rm = require("typed-rest-client/RestClient");
 var BitsoAccountStatus_1 = require("./BitsoAccountStatus");
+var BitsoBalance_1 = require("./BitsoBalance");
 var BitsoOrderBook_1 = require("./BitsoOrderBook");
 var BitsoTicker_1 = require("./BitsoTicker");
 var BitsoTransactions_1 = require("./BitsoTransactions");
@@ -166,7 +167,7 @@ var Bitso = /** @class */ (function () {
                         requestPath = '/v3/account_status/';
                         header = new BitsoPrivateTokenHandler_1.default(this.key, this.secret, httpMethod, requestPath);
                         rest = new rm.RestClient('nodejs', this.BITSO_BASE_URL_PRODUCTION, [header]);
-                        return [4 /*yield*/, rest.get('/v3/account_status/')];
+                        return [4 /*yield*/, rest.get(requestPath)];
                     case 1:
                         res = _a.sent();
                         accountStatus = new BitsoAccountStatus_1.default();
@@ -174,6 +175,28 @@ var Bitso = /** @class */ (function () {
                             accountStatus.deserialize(res.result.payload);
                         }
                         return [2 /*return*/, accountStatus];
+                }
+            });
+        });
+    };
+    Bitso.prototype.getAccountBalance = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var httpMethod, requestPath, header, rest, res, accountBalance;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        httpMethod = 'GET';
+                        requestPath = '/v3/balance';
+                        header = new BitsoPrivateTokenHandler_1.default(this.key, this.secret, httpMethod, requestPath);
+                        rest = new rm.RestClient('nodejs', this.BITSO_BASE_URL_PRODUCTION, [header]);
+                        return [4 /*yield*/, rest.get(requestPath)];
+                    case 1:
+                        res = _a.sent();
+                        accountBalance = new BitsoBalance_1.default();
+                        if (res.statusCode === 200 && res.result && res.result.success) {
+                            accountBalance.deserialize(res.result.payload);
+                        }
+                        return [2 /*return*/, accountBalance];
                 }
             });
         });
