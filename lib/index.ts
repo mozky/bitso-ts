@@ -1,6 +1,7 @@
 import * as rm from 'typed-rest-client/RestClient'
 import BitsoAccountStatus from './BitsoAccountStatus'
 import BitsoBalance from './BitsoBalance'
+import BitsoOperation from './BitsoOperation'
 import BitsoOrderBook from './BitsoOrderBook'
 import BitsoResponse from './BitsoResponse'
 import BitsoTicker from './BitsoTicker'
@@ -151,6 +152,29 @@ export default class Bitso {
     }
 
     return accountBalance
+  }
+
+  public async getLedger(operation: string): Promise<BitsoOperation[]> {
+    const httpMethod = 'GET'
+    const requestPath = `/api/v3/ledger${operation ? `/${operation}/` : ''}`
+
+    const header: BitsoPrivateTokenHandler =
+      new BitsoPrivateTokenHandler(this.key, this. secret, httpMethod, requestPath)
+
+    const rest: rm.RestClient = new rm.RestClient('nodejs', this.BITSO_BASE_URL_PRODUCTION, [header])
+
+    const res: rm.IRestResponse<BitsoResponse<BitsoOperation[]>> =
+      await rest.get<BitsoResponse<BitsoOperation[]>>(requestPath)
+
+    const ledger: BitsoOperation[] = []
+
+    if (res.statusCode === 200 && res.result && res.result.success) {
+      res.result.payload.map((bitsoOperation: any) => {
+        ledger.push(new BitsoOperation().deserialize(bitsoOperation))
+      })
+    }
+
+    return ledger
   }
 
 }

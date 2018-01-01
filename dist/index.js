@@ -38,6 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var rm = require("typed-rest-client/RestClient");
 var BitsoAccountStatus_1 = require("./BitsoAccountStatus");
 var BitsoBalance_1 = require("./BitsoBalance");
+var BitsoOperation_1 = require("./BitsoOperation");
 var BitsoOrderBook_1 = require("./BitsoOrderBook");
 var BitsoTicker_1 = require("./BitsoTicker");
 var BitsoTransactions_1 = require("./BitsoTransactions");
@@ -197,6 +198,30 @@ var Bitso = /** @class */ (function () {
                             accountBalance.deserialize(res.result.payload);
                         }
                         return [2 /*return*/, accountBalance];
+                }
+            });
+        });
+    };
+    Bitso.prototype.getLedger = function (operation) {
+        return __awaiter(this, void 0, void 0, function () {
+            var httpMethod, requestPath, header, rest, res, ledger;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        httpMethod = 'GET';
+                        requestPath = "/api/v3/ledger" + (operation ? "/" + operation + "/" : '');
+                        header = new BitsoPrivateTokenHandler_1.default(this.key, this.secret, httpMethod, requestPath);
+                        rest = new rm.RestClient('nodejs', this.BITSO_BASE_URL_PRODUCTION, [header]);
+                        return [4 /*yield*/, rest.get(requestPath)];
+                    case 1:
+                        res = _a.sent();
+                        ledger = [];
+                        if (res.statusCode === 200 && res.result && res.result.success) {
+                            res.result.payload.map(function (bitsoOperation) {
+                                ledger.push(new BitsoOperation_1.default().deserialize(bitsoOperation));
+                            });
+                        }
+                        return [2 /*return*/, ledger];
                 }
             });
         });

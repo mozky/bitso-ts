@@ -1,5 +1,6 @@
 import BitsoAccountStatus from './BitsoAccountStatus';
 import BitsoBalance from './BitsoBalance';
+import BitsoOperation from './BitsoOperation';
 import BitsoOrderBook from './BitsoOrderBook';
 import BitsoTicker from './BitsoTicker';
 import BitsoTransactions from './BitsoTransactions';
@@ -19,4 +20,5 @@ export default class Bitso {
     getTrades(book: string): Promise<BitsoTransactions>;
     getAccountStatus(): Promise<BitsoAccountStatus>;
     getAccountBalance(): Promise<BitsoBalance>;
+    getLedger(operation: string): Promise<BitsoOperation[]>;
 }
