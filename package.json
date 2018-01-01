@@ -28,6 +28,7 @@
     "typescript": "^2.6.1"
   },
   "dependencies": {
+    "@typed/hashmap": "^1.0.1",
     "typed-rest-client": "^0.15.1"
   }
 }

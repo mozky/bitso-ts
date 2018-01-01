@@ -1,6 +1,7 @@
 import * as rm from 'typed-rest-client/RestClient'
 import BitsoAccountStatus from './BitsoAccountStatus'
 import BitsoBalance from './BitsoBalance'
+import BitsoFee from './BitsoFee'
 import BitsoOperation from './BitsoOperation'
 import BitsoOrderBook from './BitsoOrderBook'
 import BitsoResponse from './BitsoResponse'
@@ -152,6 +153,27 @@ export default class Bitso {
     }
 
     return accountBalance
+  }
+
+  public async getFees(): Promise<BitsoFee> {
+    const httpMethod = 'GET'
+    const requestPath = '/api/v3/fees'
+
+    const header: BitsoPrivateTokenHandler =
+      new BitsoPrivateTokenHandler(this.key, this. secret, httpMethod, requestPath)
+
+    const rest: rm.RestClient = new rm.RestClient('nodejs', this.BITSO_BASE_URL_PRODUCTION, [header])
+
+    const res: rm.IRestResponse<BitsoResponse<BitsoFee>> =
+      await rest.get<BitsoResponse<BitsoFee>>(requestPath)
+
+    const accountFees: BitsoFee = new BitsoFee()
+
+    if (res.statusCode === 200 && res.result && res.result.success) {
+      accountFees.deserialize(res.result.payload)
+    }
+
+    return accountFees
   }
 
   public async getLedger(operation: string): Promise<BitsoOperation[]> {
