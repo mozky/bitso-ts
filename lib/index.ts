@@ -117,6 +117,7 @@ export default class Bitso {
   public async getAccountStatus(): Promise<BitsoAccountStatus> {
     const httpMethod = 'GET'
     const requestPath = '/v3/account_status/'
+
     const header: BitsoPrivateTokenHandler =
       new BitsoPrivateTokenHandler(this.key, this. secret, httpMethod, requestPath)
 

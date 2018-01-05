@@ -20,6 +20,7 @@ var PersonalAccessTokenCredentialHandler = /** @class */ (function () {
         return false;
     };
     PersonalAccessTokenCredentialHandler.prototype.handleAuthentication = function (httpClient, protocol, options, objs, finalCallback) {
+        // TODO
     };
     PersonalAccessTokenCredentialHandler.prototype.createAuthorizationHeader = function () {
         var data = this.nonce + this.httpMethod + this.requestPath + this.jsonPayload;

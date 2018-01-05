@@ -35,6 +35,7 @@ export default class PersonalAccessTokenCredentialHandler implements ifm.IReques
     }
 
     public handleAuthentication(httpClient: any, protocol: any, options: any, objs: any, finalCallback: any): void {
+        // TODO
     }
 
     private createAuthorizationHeader(): string {
